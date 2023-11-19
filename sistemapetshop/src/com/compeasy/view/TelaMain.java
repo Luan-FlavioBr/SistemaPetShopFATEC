@@ -7,6 +7,7 @@ package com.compeasy.view;
 import com.compeasy.model.Cadastro;
 import com.compeasy.model.Endereco;
 import com.compeasy.model.Paciente;
+import com.compeasy.dao.CadastroDAO;
 import com.compeasy.service.ViaCepService;
 import com.formdev.flatlaf.intellijthemes.FlatCyanLightIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatDarkPurpleIJTheme;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -33,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -41,7 +44,8 @@ import javax.swing.border.Border;
 public class TelaMain extends javax.swing.JFrame {
 
     private Border bordaPadrao;
-
+    private CadastroDAO cadastroDao = new CadastroDAO();;
+    
     /**
      * Creates new form NewJFrame
      */
@@ -50,6 +54,7 @@ public class TelaMain extends javax.swing.JFrame {
         bordaPadrao = txtNomePaciente.getBorder();
         buttonGroup1.add(radioFeminino);
         buttonGroup1.add(radioMasculino);
+        atualizarTable(cadastroDao);
     }
 
     /**
@@ -373,20 +378,17 @@ public class TelaMain extends javax.swing.JFrame {
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "Nome Paciente", "Sexo", "Data Nascimento", "Telefone", "Email", "Logradouro", "Número", "Bairro", "Cidade", "CEP", "Obrsevações"
+                "Nome Paciente", "Sexo", "Data Nascimento", "Telefone", "Email", "Logradouro", "Número", "Bairro", "Cidade", "CEP", "Obrsevações"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -398,24 +400,23 @@ public class TelaMain extends javax.swing.JFrame {
             }
         });
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jTable1.setAutoscrolls(false);
         jScrollPane2.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 37, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 877, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(54, 54, 54)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 825, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(80, 80, 80)
+                .addGap(81, 81, 81)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 91, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ver Registros", jPanel2);
@@ -476,27 +477,55 @@ public class TelaMain extends javax.swing.JFrame {
                 String sexo = radioMasculino.isSelected() ? "Masculino" : "Feminino";
                 String dataFormatada = arrumarData();
                 Paciente paciente = new Paciente(txtNomePaciente.getText(), dataFormatada, sexo);
-                Endereco endereco = new Endereco(txtLogradouro.getText(), Integer.parseInt(spinnerNumero.getValue().toString()), 
+                Endereco endereco = new Endereco(txtLogradouro.getText(), Integer.parseInt(spinnerNumero.getValue().toString()),
                         txtBairro.getText(), txtCidade.getText(), txtCEP.getText());
-                Cadastro cadastro = new Cadastro(paciente, endereco, txtTelefone.getText(), 
+                Cadastro cadastro = new Cadastro(paciente, endereco, txtTelefone.getText(),
                         txtEmail.getText(), textAreaObs.getText());
-                System.out.println(cadastro.toString());
+                cadastroDao.inserirCadastro(cadastro);
+                atualizarTable(cadastroDao);
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
+    private void atualizarTable(CadastroDAO cadastroDao) {
+        List<Cadastro> cadastrados = cadastroDao.obterTodosCadastros();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
+        model.setRowCount(0);
+        
+        for (Cadastro row : cadastrados) {
+            Object[] rowData = {
+                row.getPaciente().getNome(),
+                row.getPaciente().getSexo(),
+                row.getPaciente().getDataNascimento(),
+                row.getTelefone(),
+                row.getEmail(),
+                row.getEndereco().getLogradouro(),
+                row.getEndereco().getNumero(),
+                row.getEndereco().getBairro(),
+                row.getEndereco().getLocalidade(),
+                row.getEndereco().getCep(),
+                row.getObservacao()
+            };
+            model.addRow(rowData);
+        }
+        // Notifica a tabela sobre as mudanças no modelo
+        model.fireTableDataChanged();
+        // Redesenha a tabela
+        jTable1.repaint();
+    }
+
     private String arrumarData() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date data = null;
+        SimpleDateFormat sdfEntrada = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdfSaida = new SimpleDateFormat("yyyy-MM-dd");
+
         try {
-            data = sdf.parse(txtDataNascimento.getText());
-            Calendar calendar = new GregorianCalendar();
-            calendar.setTime(data);
-            return sdf.format(calendar.getTime());
+            Date data = sdfEntrada.parse(txtDataNascimento.getText());
+            return sdfSaida.format(data);
         } catch (ParseException ex) {
             Logger.getLogger(TelaMain.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }       
+        }
     }
 
     private boolean checarCampos() {

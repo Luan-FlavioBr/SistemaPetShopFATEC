@@ -4,7 +4,7 @@ import com.compeasy.model.Cadastro;
 import com.compeasy.model.Conexao;
 import com.compeasy.model.Endereco;
 import com.compeasy.model.Paciente;
-import java.awt.List;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
