@@ -18,7 +18,7 @@ public class TesteConexao {
                 String insertQuery = "INSERT INTO Paciente (nome, dataNascimento, sexo) VALUES (?, ?, ?)";
                 
                 // Substitua os valores abaixo pelos dados reais do paciente
-                String nome = "Fulano de Tal";
+                String nome = "Cabral";
                 Date dataNascimento = new Date(); // Substitua pela data real
                 String sexo = "M"; // Substitua pelo sexo real
 
