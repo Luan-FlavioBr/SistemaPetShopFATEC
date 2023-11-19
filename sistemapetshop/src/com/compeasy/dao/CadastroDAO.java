@@ -7,6 +7,7 @@ import com.compeasy.model.Paciente;
 import java.awt.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public class CadastroDAO {
                 insertPacienteStatement.executeUpdate();
 
                 // Obter o ID do paciente inserido
+                int pacienteId = obterUltimoIdInserido(conn);
+
                 // Inserir endereço
                 String insertEnderecoQuery = "INSERT INTO Endereco (logradouro, numero, bairro, localidade, cep) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement insertEnderecoStatement = conn.prepareStatement(insertEnderecoQuery);
@@ -43,9 +46,13 @@ public class CadastroDAO {
                 insertEnderecoStatement.executeUpdate();
 
                 // Obter o ID do endereço inserido
+                int enderecoId = obterUltimoIdInserido(conn);
+
                 // Inserir cadastro
                 String insertCadastroQuery = "INSERT INTO Cadastro (paciente_id, endereco_id, telefone, email, observacao) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement insertCadastroStatement = conn.prepareStatement(insertCadastroQuery);
+                insertCadastroStatement.setInt(1, pacienteId);
+                insertCadastroStatement.setInt(2, enderecoId);
                 insertCadastroStatement.setString(3, cadastro.getTelefone());
                 insertCadastroStatement.setString(4, cadastro.getEmail());
                 insertCadastroStatement.setString(5, cadastro.getObservacao());
@@ -66,7 +73,9 @@ public class CadastroDAO {
             }
         }
         return false;
-        // Método para obter todos os registros de cadastro do banco de dados
+    }
+
+    // Método para obter todos os registros de cadastro do banco de dados
     public List<Cadastro> obterTodosCadastros() {
         List<Cadastro> listaCadastros = new ArrayList<>();
         Conexao conexao = new Conexao();
@@ -74,11 +83,12 @@ public class CadastroDAO {
 
         if (conn != null) {
             try {
-                String query = "SELECT * FROM Cadastro "
-                        + "JOIN Paciente ON Cadastro.paciente_id = Paciente.id "
-                        + "JOIN Endereco ON Cadastro.endereco_id = Endereco.id";
+                String query = "SELECT * FROM Cadastro " +
+                               "JOIN Paciente ON Cadastro.paciente_id = Paciente.id " +
+                               "JOIN Endereco ON Cadastro.endereco_id = Endereco.id";
 
-                try (PreparedStatement statement = conn.prepareStatement(query); ResultSet resultSet = statement.executeQuery()) {
+                try (PreparedStatement statement = conn.prepareStatement(query);
+                     ResultSet resultSet = statement.executeQuery()) {
 
                     while (resultSet.next()) {
                         // Mapeia os resultados para criar objetos Cadastro, Paciente e Endereco
@@ -117,5 +127,17 @@ public class CadastroDAO {
         }
 
         return listaCadastros;
+    }
+
+    // Método para obter o último ID inserido em uma tabela
+    private int obterUltimoIdInserido(Connection conn) throws SQLException {
+        String query = "SELECT LAST_INSERT_ID() as last_id";
+        try (PreparedStatement statement = conn.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("last_id");
+            }
+        }
+        return -1;
     }
 }
