@@ -44,7 +44,9 @@ import javax.swing.table.DefaultTableModel;
 public class TelaMain extends javax.swing.JFrame {
 
     private Border bordaPadrao;
-    private CadastroDAO cadastroDao = new CadastroDAO();;
+    private CadastroDAO cadastroDao = new CadastroDAO();
+
+    ;
     
     /**
      * Creates new form NewJFrame
@@ -490,9 +492,9 @@ public class TelaMain extends javax.swing.JFrame {
     private void atualizarTable(CadastroDAO cadastroDao) {
         List<Cadastro> cadastrados = cadastroDao.obterTodosCadastros();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        
+
         model.setRowCount(0);
-        
+
         for (Cadastro row : cadastrados) {
             Object[] rowData = {
                 row.getPaciente().getNome(),
@@ -652,19 +654,24 @@ public class TelaMain extends javax.swing.JFrame {
 
     private void btnBuscarCEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarCEPActionPerformed
         ViaCepService vcs = new ViaCepService();
-        try {
-            String cepFormatado = txtCEP.getText().replace("-", "");
-            Endereco endereco = vcs.getEndereco(cepFormatado);
-            if (endereco.getBairro() != null) {
-                txtCEP.setBorder(txtBairro.getBorder());
-                txtLogradouro.setText(endereco.getLogradouro());
-                txtBairro.setText(endereco.getBairro());
-                txtCidade.setText(endereco.getLocalidade());
-            } else {
-                txtCEP.setBorder(BorderFactory.createLineBorder(Color.RED));
+        if (!txtCEP.getText().equals("     -   ")) {
+            try {
+                txtCEP.setBorder(bordaPadrao);
+                String cepFormatado = txtCEP.getText().replace("-", "");
+                Endereco endereco = vcs.getEndereco(cepFormatado);
+                if (endereco.getBairro() != null) {
+                    txtCEP.setBorder(txtBairro.getBorder());
+                    txtLogradouro.setText(endereco.getLogradouro());
+                    txtBairro.setText(endereco.getBairro());
+                    txtCidade.setText(endereco.getLocalidade());
+                } else {
+                    txtCEP.setBorder(BorderFactory.createLineBorder(Color.RED));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        }else{
+            txtCEP.setBorder(BorderFactory.createLineBorder(Color.RED));
         }
     }//GEN-LAST:event_btnBuscarCEPActionPerformed
 
