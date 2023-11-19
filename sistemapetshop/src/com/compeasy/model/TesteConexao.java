@@ -14,8 +14,9 @@ public class TesteConexao {
     public static void main(String[] args) {
         Conexao conexao = new Conexao();
         Connection conn = conexao.conectar();
-
+        System.out.println(conn);
         if (conn != null) {
+            
             try {
                 // Exemplo: Inserir um novo paciente
                 String insertQuery = "INSERT INTO Paciente (nome, dataNascimento, sexo) VALUES (?, ?, ?)";

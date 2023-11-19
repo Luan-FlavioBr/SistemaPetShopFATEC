@@ -20,10 +20,8 @@ public class Conexao {
 
         try {
             // Configuração da URL de conexão com o banco de dados
-            String url = "jdbc:mysql://localhost:3306/SistemaPetShop?user=root&password=admin";
-
-            // Estabelece a conexão
-            conn = DriverManager.getConnection(url);
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop?useTimezone=true&serverTimezone=America/Sao_Paulo"
+                    , "root", "root");
             System.out.println("Conexão estabelecida com sucesso!");
         } catch (SQLException e) {
             // Trata erros de conexão
