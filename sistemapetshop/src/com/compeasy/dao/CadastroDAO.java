@@ -2,9 +2,13 @@ package com.compeasy.dao;
 
 import com.compeasy.model.Cadastro;
 import com.compeasy.model.Conexao;
+import com.compeasy.model.Endereco;
+import com.compeasy.model.Paciente;
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,8 +19,7 @@ public class CadastroDAO {
     // Método para inserir um novo cadastro no banco de dados
     public boolean inserirCadastro(Cadastro cadastro) {
         Conexao conexao = new Conexao();
-        Connection conn = conexao.conectar();  
-        
+        Connection conn = conexao.conectar();
 
         if (conn != null) {
             try {
@@ -63,6 +66,56 @@ public class CadastroDAO {
             }
         }
         return false;
-    }
+        // Método para obter todos os registros de cadastro do banco de dados
+    public List<Cadastro> obterTodosCadastros() {
+        List<Cadastro> listaCadastros = new ArrayList<>();
+        Conexao conexao = new Conexao();
+        Connection conn = conexao.conectar();
 
+        if (conn != null) {
+            try {
+                String query = "SELECT * FROM Cadastro "
+                        + "JOIN Paciente ON Cadastro.paciente_id = Paciente.id "
+                        + "JOIN Endereco ON Cadastro.endereco_id = Endereco.id";
+
+                try (PreparedStatement statement = conn.prepareStatement(query); ResultSet resultSet = statement.executeQuery()) {
+
+                    while (resultSet.next()) {
+                        // Mapeia os resultados para criar objetos Cadastro, Paciente e Endereco
+                        Paciente paciente = new Paciente(
+                                resultSet.getString("nome"),
+                                resultSet.getString("dataNascimento"),
+                                resultSet.getString("sexo")
+                        );
+
+                        Endereco endereco = new Endereco(
+                                resultSet.getString("logradouro"),
+                                resultSet.getInt("numero"),
+                                resultSet.getString("bairro"),
+                                resultSet.getString("localidade"),
+                                resultSet.getString("cep")
+                        );
+
+                        Cadastro cadastro = new Cadastro(
+                                paciente,
+                                endereco,
+                                resultSet.getString("telefone"),
+                                resultSet.getString("email"),
+                                resultSet.getString("observacao")
+                        );
+
+                        listaCadastros.add(cadastro);
+                    }
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                // Fecha a conexão
+                conexao.desconectar(conn);
+            }
+        }
+
+        return listaCadastros;
+    }
 }
