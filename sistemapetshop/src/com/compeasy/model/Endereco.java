@@ -1,26 +1,26 @@
 package com.compeasy.model;
 //
 public class Endereco {
-    private String rua;
+    private String logradouro;
     private int numero;
     private String bairro;
-    private String cidade;
+    private String localidade;
     private String cep;
 
     public Endereco(String rua, int numero, String bairro, String cidade, String cep) {
-        this.rua = rua;
+        this.logradouro = rua;
         this.numero = numero;
         this.bairro = bairro;
-        this.cidade = cidade;
+        this.localidade = cidade;
         this.cep = cep;
     }
 
-    public String getRua() {
-        return rua;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public void setRua(String rua) {
-        this.rua = rua;
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
     }
 
     public int getNumero() {
@@ -39,12 +39,12 @@ public class Endereco {
         this.bairro = bairro;
     }
 
-    public String getCidade() {
-        return cidade;
+    public String getLocalidade() {
+        return localidade;
     }
 
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
+    public void setLocalidade(String localidade) {
+        this.localidade = localidade;
     }
 
     public String getCep() {
@@ -54,5 +54,15 @@ public class Endereco {
     public void setCep(String cep) {
         this.cep = cep;
     }
-      
+
+    @Override
+    public String toString() {
+        return "Endereco{" +
+                "logradouro='" + logradouro + '\'' +
+                ", numero=" + numero +
+                ", bairro='" + bairro + '\'' +
+                ", cidade='" + localidade + '\'' +
+                ", cep='" + cep + '\'' +
+                '}';
+    }    
 }

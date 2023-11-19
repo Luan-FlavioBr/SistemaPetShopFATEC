@@ -1,13 +1,11 @@
 package com.compeasy.model;
 
-import java.util.Date;
-
 public class Paciente {
     private String nome;
-    private Date dataNascimento;
+    private String dataNascimento;
     private String sexo;
 
-    public Paciente(String nome, Date dataNascimento, String sexo) {
+    public Paciente(String nome, String dataNascimento, String sexo) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.sexo = sexo;
@@ -21,11 +19,11 @@ public class Paciente {
         this.nome = nome;
     }
 
-    public Date getDataNascimento() {
+    public String getDataNascimento() {
         return dataNascimento;
     }
     
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -35,5 +33,10 @@ public class Paciente {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }  
+
+    @Override
+    public String toString() {
+        return String.format(this.nome+" "+this.dataNascimento+" "+this.sexo);
     }  
 }
