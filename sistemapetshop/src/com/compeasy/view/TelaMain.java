@@ -103,7 +103,7 @@ public class TelaMain extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton7 = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
         btnMudarTema = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -423,16 +423,16 @@ public class TelaMain extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Ver Registros", jPanel2);
 
-        jButton7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton7.setText("X");
-        jButton7.setBorder(null);
-        jButton7.setBorderPainted(false);
-        jButton7.setFocusPainted(false);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton7.setOpaque(true);
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnFechar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnFechar.setText("X");
+        btnFechar.setBorder(null);
+        btnFechar.setBorderPainted(false);
+        btnFechar.setFocusPainted(false);
+        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFechar.setOpaque(true);
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnFecharActionPerformed(evt);
             }
         });
 
@@ -450,7 +450,7 @@ public class TelaMain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMudarTema, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0))
         );
@@ -458,7 +458,7 @@ public class TelaMain extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnMudarTema, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -467,9 +467,9 @@ public class TelaMain extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         int confirmacaoCadastro = JOptionPane.showConfirmDialog(null, "Deseja confirmar o cadastro?",
@@ -485,6 +485,22 @@ public class TelaMain extends javax.swing.JFrame {
                         txtEmail.getText(), textAreaObs.getText());
                 cadastroDao.inserirCadastro(cadastro);
                 atualizarTable(cadastroDao);
+                JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!", 
+                        "Cadastrado", JOptionPane.PLAIN_MESSAGE);
+                txtNomePaciente.setText("");
+                txtDataNascimento.setText("");
+                txtTelefone.setText("");
+                txtEmail.setText("");
+                txtLogradouro.setText("");
+                spinnerNumero.setValue(0);
+                txtBairro.setText("");
+                txtCidade.setText("");
+                txtCEP.setText("");
+                textAreaObs.setText("");
+                buttonGroup1.clearSelection();
+            }else{
+                JOptionPane.showMessageDialog(null, "Por favor, insira corretamente os dados", 
+                        "Campos incorretos", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
@@ -567,7 +583,6 @@ public class TelaMain extends javax.swing.JFrame {
 
         try {
             Date data = sdf.parse(dataString);
-            System.out.println("Válida");
             return true;
         } catch (ParseException e) {
             return false;
@@ -698,9 +713,9 @@ public class TelaMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarCEP;
     private javax.swing.JButton btnCadastrar;
+    private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnMudarTema;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
