@@ -481,7 +481,7 @@ public class TelaMain extends javax.swing.JFrame {
             public void action(PopupController pc, int i) {
                 if (i == MessageAlerts.YES_OPTION) {
                     if (checarCampos()) {
-                        String sexo = radioMacho.isSelected() ? "Masculino" : "Feminino";
+                        String sexo = radioMacho.isSelected() ? "Macho" : "Fêmea";
                         String dataFormatada = arrumarData();
                         Paciente paciente = new Paciente(txtNomePaciente.getText(), dataFormatada, sexo);
                         Endereco endereco = new Endereco(txtLogradouro.getText(), Integer.parseInt(spinnerNumero.getValue().toString()),
