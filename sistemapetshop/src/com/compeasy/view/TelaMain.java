@@ -48,7 +48,6 @@ public class TelaMain extends javax.swing.JFrame {
     private Border bordaPadrao;
     private CadastroDAO cadastroDao = new CadastroDAO();
 
-    ;
     
     /**
      * Creates new form NewJFrame
@@ -57,8 +56,8 @@ public class TelaMain extends javax.swing.JFrame {
         GlassPanePopup.install(this);
         initComponents();
         bordaPadrao = txtNomePaciente.getBorder();
-        buttonGroup1.add(radioFeminino);
-        buttonGroup1.add(radioMasculino);
+        buttonGroup1.add(radioFemea);
+        buttonGroup1.add(radioMacho);
         atualizarTable(cadastroDao);
     }
 
@@ -80,8 +79,8 @@ public class TelaMain extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtDataNascimento = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
-        radioMasculino = new javax.swing.JRadioButton();
-        radioFeminino = new javax.swing.JRadioButton();
+        radioMacho = new javax.swing.JRadioButton();
+        radioFemea = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -141,9 +140,9 @@ public class TelaMain extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel3.setText("Data de nascimento");
 
-        radioMasculino.setText("Masculino");
+        radioMacho.setText("Macho");
 
-        radioFeminino.setText("Feminino");
+        radioFemea.setText("Fêmea");
 
         jSeparator1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -292,9 +291,9 @@ public class TelaMain extends javax.swing.JFrame {
                                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGap(14, 14, 14))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(radioMasculino)
+                                        .addComponent(radioMacho)
                                         .addGap(18, 18, 18)
-                                        .addComponent(radioFeminino))))
+                                        .addComponent(radioFemea))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -323,8 +322,8 @@ public class TelaMain extends javax.swing.JFrame {
                             .addGap(0, 0, 0)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtNomePaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(radioMasculino, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(radioFeminino, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(radioMacho, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(radioFemea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -482,7 +481,7 @@ public class TelaMain extends javax.swing.JFrame {
             public void action(PopupController pc, int i) {
                 if (i == MessageAlerts.YES_OPTION) {
                     if (checarCampos()) {
-                        String sexo = radioMasculino.isSelected() ? "Masculino" : "Feminino";
+                        String sexo = radioMacho.isSelected() ? "Masculino" : "Feminino";
                         String dataFormatada = arrumarData();
                         Paciente paciente = new Paciente(txtNomePaciente.getText(), dataFormatada, sexo);
                         Endereco endereco = new Endereco(txtLogradouro.getText(), Integer.parseInt(spinnerNumero.getValue().toString()),
@@ -557,7 +556,7 @@ public class TelaMain extends javax.swing.JFrame {
 
     private boolean checarCampos() {
         if (txtNomePaciente.getText().strip().equals("") || !checarData(txtDataNascimento.getText())
-                || !(radioFeminino.isSelected() || radioMasculino.isSelected()) || txtTelefone.getText().equals("(  )      -    ")
+                || !(radioFemea.isSelected() || radioMacho.isSelected()) || txtTelefone.getText().equals("(  )      -    ")
                 || !checarEmail(txtEmail.getText()) || txtLogradouro.getText().strip().equals("")
                 || spinnerNumero.getValue().toString().equals("0") || txtBairro.getText().strip().equals("")
                 || txtCidade.getText().strip().equals("") || txtCEP.getText().equals("     -   ")) {
@@ -745,8 +744,8 @@ public class TelaMain extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JRadioButton radioFeminino;
-    private javax.swing.JRadioButton radioMasculino;
+    private javax.swing.JRadioButton radioFemea;
+    private javax.swing.JRadioButton radioMacho;
     private javax.swing.JSpinner spinnerNumero;
     private javax.swing.JTextArea textAreaObs;
     private javax.swing.JTextField txtBairro;
