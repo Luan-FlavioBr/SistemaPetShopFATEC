@@ -21,9 +21,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +34,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import raven.alerts.MessageAlerts;
+import raven.popup.GlassPanePopup;
 
 /**
  *
@@ -52,6 +52,7 @@ public class TelaMain extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     public TelaMain() {
+        GlassPanePopup.install(this);
         initComponents();
         bordaPadrao = txtNomePaciente.getBorder();
         buttonGroup1.add(radioFeminino);
@@ -499,8 +500,9 @@ public class TelaMain extends javax.swing.JFrame {
                 textAreaObs.setText("");
                 buttonGroup1.clearSelection();
             }else{
-                JOptionPane.showMessageDialog(null, "Por favor, insira corretamente os dados", 
-                        "Campos incorretos", JOptionPane.ERROR_MESSAGE);
+                MessageAlerts.getInstance().showMessage("Informações Incorretas",
+                        "Por favor, verifique se os campos estão preenchidos corretamente",
+                        MessageAlerts.MessageType.ERROR);
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
