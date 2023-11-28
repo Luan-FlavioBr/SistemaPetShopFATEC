@@ -36,6 +36,8 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import raven.alerts.MessageAlerts;
 import raven.popup.GlassPanePopup;
+import raven.popup.component.PopupCallbackAction;
+import raven.popup.component.PopupController;
 
 /**
  *
@@ -473,38 +475,43 @@ public class TelaMain extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFecharActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        int confirmacaoCadastro = JOptionPane.showConfirmDialog(null, "Deseja confirmar o cadastro?",
-                "Confirmação cadastro", JOptionPane.YES_NO_OPTION);
-        if (confirmacaoCadastro == 0) {
-            if (checarCampos()) {
-                String sexo = radioMasculino.isSelected() ? "Masculino" : "Feminino";
-                String dataFormatada = arrumarData();
-                Paciente paciente = new Paciente(txtNomePaciente.getText(), dataFormatada, sexo);
-                Endereco endereco = new Endereco(txtLogradouro.getText(), Integer.parseInt(spinnerNumero.getValue().toString()),
-                        txtBairro.getText(), txtCidade.getText(), txtCEP.getText());
-                Cadastro cadastro = new Cadastro(paciente, endereco, txtTelefone.getText(),
-                        txtEmail.getText(), textAreaObs.getText());
-                cadastroDao.inserirCadastro(cadastro);
-                atualizarTable(cadastroDao);
-                JOptionPane.showMessageDialog(null, "Cadastrado com sucesso!", 
-                        "Cadastrado", JOptionPane.PLAIN_MESSAGE);
-                txtNomePaciente.setText("");
-                txtDataNascimento.setText("");
-                txtTelefone.setText("");
-                txtEmail.setText("");
-                txtLogradouro.setText("");
-                spinnerNumero.setValue(0);
-                txtBairro.setText("");
-                txtCidade.setText("");
-                txtCEP.setText("");
-                textAreaObs.setText("");
-                buttonGroup1.clearSelection();
-            }else{
-                MessageAlerts.getInstance().showMessage("Informações Incorretas",
-                        "Por favor, verifique se os campos estão preenchidos corretamente",
-                        MessageAlerts.MessageType.ERROR);
+
+        MessageAlerts.getInstance().showMessage("Confirmação cadastro", "Deseja confirmar o cadastro?", 
+                MessageAlerts.MessageType.WARNING, MessageAlerts.YES_NO_OPTION, new PopupCallbackAction() {
+            @Override
+            public void action(PopupController pc, int i) {
+                if (i == MessageAlerts.YES_OPTION) {
+                    if (checarCampos()) {
+                        String sexo = radioMasculino.isSelected() ? "Masculino" : "Feminino";
+                        String dataFormatada = arrumarData();
+                        Paciente paciente = new Paciente(txtNomePaciente.getText(), dataFormatada, sexo);
+                        Endereco endereco = new Endereco(txtLogradouro.getText(), Integer.parseInt(spinnerNumero.getValue().toString()),
+                                txtBairro.getText(), txtCidade.getText(), txtCEP.getText());
+                        Cadastro cadastro = new Cadastro(paciente, endereco, txtTelefone.getText(),
+                                txtEmail.getText(), textAreaObs.getText());
+                        cadastroDao.inserirCadastro(cadastro);
+                        atualizarTable(cadastroDao);
+                        MessageAlerts.getInstance().showMessage("Cadastro Realizado", 
+                                "Cadastro realizado com sucesso!", MessageAlerts.MessageType.SUCCESS);
+                        txtNomePaciente.setText("");
+                        txtDataNascimento.setText("");
+                        txtTelefone.setText("");
+                        txtEmail.setText("");
+                        txtLogradouro.setText("");
+                        spinnerNumero.setValue(0);
+                        txtBairro.setText("");
+                        txtCidade.setText("");
+                        txtCEP.setText("");
+                        textAreaObs.setText("");
+                        buttonGroup1.clearSelection();
+                    } else {
+                        MessageAlerts.getInstance().showMessage("Informações Incorretas",
+                                "Por favor, verifique se os campos estão preenchidos corretamente",
+                                MessageAlerts.MessageType.ERROR);
+                    }
+                }
             }
-        }
+        });
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void atualizarTable(CadastroDAO cadastroDao) {
@@ -687,7 +694,7 @@ public class TelaMain extends javax.swing.JFrame {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             txtCEP.setBorder(BorderFactory.createLineBorder(Color.RED));
         }
     }//GEN-LAST:event_btnBuscarCEPActionPerformed
